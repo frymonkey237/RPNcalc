@@ -1,0 +1,9 @@
+=General
+
+.Commands are case-insensitive. Variable names, including program variable
+.names, and units, are case-sensitive. 
+
+.Variables cannot be given the name of any existing command or program variable.
+.However, variables can be given the name of an existing user variable, which
+.would just overwrite the previous value of the variable with a new value.  
+
