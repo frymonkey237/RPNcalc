@@ -8,4 +8,7 @@ RPNcalcV8
 *.profile
 
 # Ignore user variables, once functionality is added 
-*.variables 
+*.variables
+
+# Ignore vim swap files 
+*.swp 
