@@ -28,4 +28,27 @@ Mathematical and program commands are case-insensitive. User variable names, pro
 mixed unit operations. 
 * Add functionality for attaching units to values with the ability to combine units algebraically with mixed unit operations. 
 * Fully detailed help pages on usage of the program and the usage of individual
-  commands which can be opened with the 'help' command. 
+  commands which can be opened with the 'help' command.
+
+## Screenshot 
+
+>+-RPNcalc----------------------------+
+>|   ___   ___ __   __ _  __   _  __  | 
+>|  / O ) / O )  \ / /__\/   \| |/__\ |
+>| / . \ / / / /\ v / |__ ()  \ | |__ |
+>|/_/ \_\_/ /_/  \_/ \__/\__/\_\|\__/ |
+>+------------------------------------+
+>         type 'help' for help        
+> +----------------------------------+
+> |10: 0                             | -> Execution time: 0.000092s
+> | 9: 0                             | -> Last Input: 2 2 + 2 *
+> | 8: 0                             | 
+> | 7: 0                             | 
+> | 6: 0                             | 
+> | 5: 0                             | 
+> | 4: 0                             | 
+> | 3: 0                             | 
+> | 2: 0                             | 
+> | 1: 8                             | 
+> +----------------------------------+
+> >>> pi 2 / cos
