@@ -1,5 +1,5 @@
 # Ignore compiled program 
-RPNcalcV8
+RPNcalc
 
 # Ignore stack files 
 *.stack
