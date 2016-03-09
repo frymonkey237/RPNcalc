@@ -1,0 +1,14 @@
+# Ignore compiled program 
+RPNcalcV8
+
+# Ignore stack files 
+*.stack
+
+# Ignore profiles, once functionality is added 
+*.profile
+
+# Ignore user variables, once functionality is added 
+*.variables
+
+# Ignore vim swap files 
+*.swp 
