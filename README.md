@@ -10,8 +10,8 @@ to '2 2 +' in RPN. The benefit of using RPN notation is that it eliminates the
 need for operator precedence and parenthesis. In standard mathematical notation
 '2 + 2 * 10' is equivalent to '2 + (2 * 10)', so parenthesis will have to be 
 used if '(2 + 2) * 10' is desired. In RPN notation, however, the order of the 
-operators and operands is all that is necessary to differentiate the two: in
-RPN, '2 + (2 * 10)' is equivalent to '2 10 * 2 +' or '2 2 10 * +' and 
+operators and operands is all that is necessary to differentiate the two:   
+'2 + (2 * 10)' is equivalent to '2 10 * 2 +' or '2 2 10 * +' and 
 '(2 + 2) * 10' is equivalent to '2 2 + 10 *' or '10 2 2 + *'. Notice, operators
 are applied one at a time, from left to right, on the previous operands, using
 the result of any previous operations in place of the original operands.
