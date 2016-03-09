@@ -125,8 +125,6 @@ using namespace std;
 //    |  Class and Struct Declarations  |  
 //----+---------------------------------+---------------------------------------
 
-
-
 //Data structure for holding user modifiable program variables. Passed by reference to 
 //  program command function. Stack is not included and is passed separately.  
 struct ProgramVariables {
