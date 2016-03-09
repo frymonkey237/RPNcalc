@@ -1,8 +1,8 @@
 section_start: General
 RPNcalc 
 
-RPNcalc is a terminal based reverse polish notation calculator for linux, which
-utilizes a stack to hold user added and computed values. 
+RPNcalc is a terminal based reverse polish notation calculator that utilizes a 
+stack to hold user added and computed values.  
 
 Reverse polish notation, or RPN, is a postfix mathematical notation, which means
 that the operators, such as '+' and '-', follow the operands rather than being 

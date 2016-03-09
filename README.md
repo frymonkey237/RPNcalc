@@ -1,6 +1,6 @@
 # RPNcalc
 
-RPNcalc is a terminal based reverse polish notation calculator that utilizes a 
+RPNcalc is a terminal based reverse polish notation calculator that utilizes a
 stack to hold added and computed values. 
 
 Reverse polish notation, or RPN, is a postfix mathematical notation, which means
@@ -32,3 +32,16 @@ By default, the top ten stack elements will be displayed above the input prompt.
 Mathematical and program commands are case-insensitive. User variable names,
 program variable names, and units are case-sensitive. 
 
+
+## Features:
+    * Many common arithmetical and trigonometric  functions.
+    * Ability to store values into a user defined variable name with 'sto' 
+      command. 
+    * Ability to change some program variables using the 'set' command, such as
+      the width of the display and the number of stack elements to display.
+    * Ability to repeat the preceding input line with 'repeat' command and 
+      variants such as 'sequence', 'sum', and 'product'. 
+    * Ability to save the current stack or load a previously saved stack.
+    * A single input line can be calculated without opening the entire program
+      by adding the input line after the program name when launching from the 
+      command line.
