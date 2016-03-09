@@ -1,25 +1,13 @@
 /* TO DO 
- *      > add program commands function 
  *      > use ratio to allow entering fractions
  *          > identify fractions using either regex or cstring methods 
  *      > Figure out how to do vectors 
- *      > Fix trig default (should default to radians not degrees)
- *      > Add command line arguments to allow one line calculations 
- *          > -l would indicate to load previously saved stack
- *          > -s would indicate to save the result
- *          > -l and -s, if present, should precede the input line.
- *          > the only output when using command line arguments is the top of
- *            the stack. 
  *      > Create help file 
- *          > Under greeting: "type help for help
- *              > main help page
- *          > Also by command: help cmd 
- *          > help flag is set 
- *              > help is another infix command
- *          > if help is last element of progVar.inputTerms, then display main help page
- *          > if term after help has no associated help entry, then "Error: no help page
- *            for 'term'". 
- *          > stored in RPNcalcV5.help
+ *          > Also by command: help cmd  
+ *          > help is an infix command
+ *          > if help isn't followed by a command, then display main help page
+ *          > help info stored in RPNcalc.help
+ *          > How will the user scroll through help page? 
  *      > While it might unnecessarily increase memory requirements, it would be nice to
  *        have an undo function that basically returns the stack to the previous iteration 
  *          > On every iteration, a copy of the stack would have to be made
@@ -57,9 +45,6 @@
  *                    be converted if possible to facilitate things like addition and 
  *                    subtraction. 
  *      > think about algebraic variables 
- *      > maybe show input history and/or save input history 
- *      > I think it has to be case sensitive. Otherwise it limits possible units,
- *        variables and constant names. 
  *      > Another way to handle multiple data types on the stack is to create a stack 
  *        element structure which would hold a stack element, its datatype, units, and any
  *        other relevant information. 
@@ -70,31 +55,14 @@
  *          > <boost/numeric/interval.hpp> for arithmetic on intervals. 
  *              > Could be useful for computing the result of integration over a range. 
  *              > will need to link the boost library when compiling. 
+ *          > Gnu mpfr library for arbitrary precision floating point
+ *            calculations.
  *      > For mixed type oprations, look into overloading the math functions and using 
 *         try-catch statements to catch when a operation is undefined for given types.
-*       > store numbers into variables with "store variableName" 
-*           > like set, store causes a store flag to be set to true
-*           > also like set, if term following store is not a valid variable name, an 
-*             error flag is raised
-*           > A valid variable name is one which is not already a program command or 
-*             defined constant
-*               > a list or array that contains all these names is searched for the new
-*                 variable name when store flag is true
-*           > user variables can be saved to file 
 *       > save command that is like set and store in that what is to be saved follows the
 *         command.
 *           > valid forms are "save variables", "save profile", "save stack", and 
 *             "save all"
-*       > So it seems like there's a need to outline the general behavior of infix binary
-*         commands like "set", "store" and "save". All of these raise a flag which causes
-*         the normal input processing procedure to be diverted for the following term.
-*         If the following term is a valid for the procedure, the procedure is carried 
-*         out. If the following term is not valid in the context, an error flag is raised. 
-*         Either way, the procedure flag is set back down. If no term follows the command,
-*         the flag will simply stay up until the next input. 
-*         > Maybe a single infix command flag should be raised along with the
-*           individual command flags. That way only one flag would have to be
-*           checked before normal input is processed.
 *       > Use regex to determine input types 
 *           > Possible types:
 *               > real number
@@ -110,44 +78,15 @@
 *               > command
 *               > interval
 *                   > using boost interval package 
-*       > Make a repeat command that takes the number preceding the command and
-*         repeats all of the input to the left that amount of times. 
-*           > create an integer variable called repeatTimes in the program variables
-*             structure. This will be set to zero by default.
-*           > the repeat function sets repeatTimes to n - 1 where n is the
-*             truncated number from the top of the stack. 
-*               > n - 1 because line will already have been processed at least
-*                 once by the time repeat is encountered.  
-*           > Then the inputTerms is searched for the index of repeat, and
-*             when found the number to the left is removed. 
-*           > Then the input function is recursively called again, but on the
-*             second iteration, repeatTimes will be decremented rather than
-*             reset to the top stack element.   
-*       > Add a command called "sequence" that acts just like repeat except that
-*         a copy of the result of each iteration is pushed to the stack so that 
-*         the result of each step is visible to the user. 
 *       > change realStack back to a stack rather than a list 
+*           > Or maybe a dynamically allocated array with my own implementation
+*             of container functions, like push_back(num) and size(). 
 *       > add "set scientific" command to put in scientific notation
 *           > "set standard" to change back to standard notation
-*       > add repeatTimes variable back to progVar. Use with repeat and sequence 
 *       > look into using a package for arbitrary floating point calculations 
+*           > Gnu mpfr
 *           > allow user to set precision of calculations and significant
 *             figures to display.
-*       > assign content to variable with "store variableName" or "sto
-*         variableName". To get a variables value use "recall variableName" or
-*         "rcl variableName". Or maybe recall isn't necessary?
-*           > Already using set, so maybe just use that to assign a variable and
-*             recall is unnecessary since just inputting the variable name
-*             pushes its value to the stack 
-*           > wait...then program variable names couldn't be used in
-*             calculations. So maybe use store/sto.
-*           > Need to create another input function for variables along with 
-*             a map of variable names and values contained in progVar. 
-*             Need a set bool, then use the index to get the name and
-*             assign it
-*       > why is radian mode in the stack class rather than progVar? Maybe it
-*         should be relocated to progVar if there's no reason to keep it there.
-*           > because unary commands doesnt take progVar
 *       > for set command map try and create a struct that has a pointer to a
 *         member of program variables of type T.
 *          
@@ -182,10 +121,9 @@
 using namespace std;
 
 
-//*****************************************************************************************
-//**|  Class and Struct Declarations  |****************************************************
-//*****************************************************************************************
-
+//    +---------------------------------+
+//    |  Class and Struct Declarations  |  
+//----+---------------------------------+---------------------------------------
 
 
 
