@@ -1,28 +1,147 @@
-/* TO DO 
- *      > use ratio to allow entering fractions
- *          > identify fractions using either regex or cstring methods 
- *      > Figure out how to do vectors 
- *      > Create help file 
- *          > Also by command: help cmd  
- *          > help is an infix command
+/* TO DO
+ *  > TO DO: 
+ *      > remove the extra indent on the to do list. 
+ *      > switch over to the "> Subject:" format which seems like it would more
+ *        easily translate into program documentation. In addition, try to write
+ *        notes in such a way that they will easily translate into
+ *        documentation. That way, instead of deleting this stuff once it's
+ *        complete, it can be repurposed into documentation, killing two birds
+ *        with one stone. 
+ *
+ *  > FileHandler:
+ *      > Create a file handler class and move file related functions to it. 
+ *      > Create methods for saving/loading program variables (profiles), user
+ *        defined content, and unit conversion ratios. 
+ *      
+ *  > Named:
+ *      > Create a "named" command that always follows a save or load command
+ *        pair and precedes a filename to save to or load from. 
+ *          > If no "named" command follows a save or load command pair, then 
+ *            whatever is being saved or loaded will use the associated default
+ *            file which is called default.<ext> where ext is the associated 
+ *            extension.
+ *              > Saving/loading with the name "default" will have the same
+ *                effect. For example, "save stack" is equivalent to 
+ *                "save stack named default".
+ *      > Things that can be saved or loaded: 
+ *        Note: command is what would follow "save" or "load"
+ *          > the stack 
+ *              > extension: ".stack"
+ *              > command: "stack"
+ *              > default file: "default.stack"
+ *          > user defined variables, functions, and conversion ratios 
+ *              > extension: ".def"
+ *              > command: "defined"
+ *              > default file: "default.def"
+ *          > program variables/settings 
+ *              > extension: ".profile"
+ *              > command: "profile" 
+ *              > default: "default.profile"
+ *          > all three of the above 
+ *              > command: "all" 
+ *      > If saving and file with given name already exists, then overwrite the  
+ *        file. If file with name does not exist, create it.   
+ *      > Examples: 
+ *          > To save the stack to default file:
+ *                  "save stack" or "save stack default" 
+ *          > To save user defined variables with name "myVar":
+ *                  "save defined named myVar"
+ *          > Load a profile with the name "fullscreen":
+ *                  "load profile named fullscreen"
+ *
+ *  > Rationals: 
+ *      > look into ratio library for fractions
+ *          > identify fractions using either regex or cstring methods
+ *          > maybe make the RationalNumber class polymorphically inherit from
+ *            both SingletonElement and ratio
+ *  
+ *  > Command Naming:
+ *      > Add more abbreviated forms of commands which consist of a dash, '-',
+ *        followed by a single letter. Also, add more full names for
+ *        trigonometric operations, like "arcsecant" or "hyperbolictangent".
+ *
+ *  > Help:
+ *      > list all the commands in the help file. 
+ *      > Create help command and help file reader. Look into how man pages are
+ *        normally handled on linux and in ncurses programs.  
+ *          > Can get help for specific commands with: "help <cmd>"  
+ *          > help is an infix command, requiring look-ahead, like set, store,
+ *            save, etc. 
  *          > if help isn't followed by a command, then display main help page
  *          > help info stored in RPNcalc.help
  *          > How will the user scroll through help page? 
- *      > While it might unnecessarily increase memory requirements, it would be nice to
- *        have an undo function that basically returns the stack to the previous iteration 
- *          > On every iteration, a copy of the stack would have to be made
- *              > a method in MathStack creates and stores copy
- *                  > done on every iteration, or on every iteration that alters the stack
- *              > another MathStack method replaces current stack with copy 
- *                  > called whenever user enters undo command
- *      > Save and load program variables 
+ *          > help files also should be accessible from the command line using
+ *            the man command. 
+ *
+ *  > Undo: 
+ *      > undo returns the stack to it's state prior to the last input, or
+ *        prior to the last undo if undo is called multiple times. 
+ *      > undo mode can be disabled by the user with "unset undo" in order
+ *        to improve performance.
+ *          > Create flag in ProgramVariables for undo. 
+ *      > number of past stacks to save is user definable with 
+ *        "<num> set undosteps"
+ *          > will have to add undoSteps variable to ProgramVariables. 
+ *      > If undo flag is set, a file is kept open and stack is appended to
+ *        the file during each iteration, after the input is entered, but 
+ *        before it is processed. 
+ *      > 
+ *
+ *      > Set:
+ *          > For numeric program variables the existing syntax for set is: 
+ *                      "<value> set <variable>"
+ *          > Need a system for using set with boolean program variables. 
+ *              > The syntax for boolean variables is: 
+ *                      "set <variable>" or "unset <variable>" 
+ *              > "set" sets the proceeding variable to true, and "unset" sets
+ *                the proceeding variable to false, regardless of the variable's
+ *                previous value. 
+ *              > both "set" and "unset" call the setProgramVariable function. 
+ *                  > After look ahead is performed to get the variable to set,
+ *                    the setProgramVariable function branches depending on if
+ *                    the variable is a bool or an int. 
+ *                      > If variable is an int, the top of the stack is popped
+ *                        and stored to the variable  
+ *                      > If variable is a bool, the first letter of the current
+ *                        term, which would have to be either "set" or "unset",
+ *                        is checked. 
+ *                          > ProgramVariables method setVar is called using
+ *                            ternary conditional operator: 
+ *                            progVar.setVar(<variable>, tolowercase(
+ *                                    progVar.inputTerms[index].front()) == 's'?
+ *                                    true : false);
+ *                          > Note: Boolean variables that represent a "this or
+ *                            that" relationship rather than a "yes or no"
+ *                            relationship, may have variable names which aren't
+ *                            really a variable, but rather an alias for a 
+ *                            for inverse of another variable, eg. "set degrees"
+ *                            is really an alias for "unset radians". 
+ *                            
+ *
+ *      > Radian mode: 
+ *          > move radian mode back to ProgramVariables, and then add a bool
+ *            parameter to unary operations for the radian variable. 
+ *
+ *      > ProgramVariables:
+ *          > make ProgramVariables a class so that it can have member
+ *            functions.
+ *          > create an overloaded method called something like "setVar" with
+ *            two variations. 
+ *              > One sets integer variables and takes a string containing the 
+ *                name of the intended variable along with the new integer value 
+ *                for the variable. 
+ *              > The other sets boolean variables and takes the variable name 
+ *                along with a boolean value. 
+ *
+ *      > Save/Load: 
  *          > could even create profiles 
  *              > user would specify profile names which would be appended on to the 
  *                filename for the profile data. 
  *                  ".RPNstack.someProfileName.profile"
  *              > profiles would be useful for running the calculator on different 
  *                terminals.
- *      > create functionality for units 
+ *
+ *      > Units: 
  *          > units a specified with a unit initials preceded by an underscore
  *              > examples: kelvin - "_k" , millimeter - "_mm"
  *          > units are stored in stack element data structure 
@@ -89,10 +208,119 @@
 *             figures to display.
 *       > for set command map try and create a struct that has a pointer to a
 *         member of program variables of type T.
-*          
-*
-*
-*/
+*       > Create a new ncurses mode that is accessed with the command line
+*         argument "-n". That way the currently functioning mode will continue
+*         to be operational while the ncurses interface is implemented. 
+*           > Once ncurses is fully operational, make ncurses mode the default
+*             and the original mode accessed with a command line argument.
+*           > Make each of the 3 modes into separate functions so that the main
+*             function is basically just a decision tree between the three
+*             modes.
+*       > Create an empty class "StackElement" that classes "RealNumber",
+*         "RealVector", "ComplexNumber", and "RationalNumber" inherit from
+*           > The stack will be an array of "StackElement"s, which will allow
+*             holding real numbers, complex numbers, rationals, and vectors on
+*             the same stack. 
+*           > A "RealVector" will hold an array of real numbers, complex 
+*             numbers or rationals. 
+*               > Create class "SingletonElement" that inherits from 
+*                 "StackElement" and is inherited by "RealNumber",
+*                 "ComplexNumber", and "RationalNumber". This is so the 
+*                 vector class can hold an array of SingletonElements. 
+*           > Rational class holds two integer values: "numerator" and 
+*             "denominator". 
+*       >                             StackElement
+*                                     /          \
+*                     SingletonElement            SetElement      
+*                    /       |       \           |         \
+* Unit RationalNumber RealNumber ComplexNumber RealVector RealMatrix 
+*  +---------+-------------+-----------+
+*            |             |           |          
+*       RationalUnit   RealUnit    ComplexUnit      
+*         
+*              
+*           > Units are a class that contains an array of unit numerators and
+*             unit denominators. An empty numerator or denominator array is
+*             assumed to be equivalent to 1. 
+*               > RationalUnit, RealUnit, and ComplexUnit are polymorphic
+*                 classes that inherit from both the unit class and their 
+*                 respective SingletonElement class. These are empty classes 
+*                 which inherit the their respective element variable and the
+*                 unit variables. 
+*               > Allowed Mixed unit operations are limited to multiplication 
+*                 and division and some derived operations derived from them 
+*                 like raising to exponent. For example, the unit km+s is not
+*                 allowed, but km*s or km/s is.
+*               > Units are demarcated with an underscore, so 50 miles per hour
+*                 would be entered as "50 _mi/hr".
+*                   > No spaces in units. 
+*                   > Multiplication and division must be explicit. 
+*               > Units do not have to be predefined, a unit is just two arrays
+*                 of cstrings. The cstrings themselves can be anything, but the
+*                 naming must be consistent, ie. "miles" and "mi" would not be 
+*                 considered equivalent. 
+*               > Units "_d" is a way of specifying degree mode for a specific
+*                 operand as well as a way to prevent invalid mixed unit 
+*                 operations on a degree. Radians don't need a unit so there
+*                 isn't a analogous "_r" for radians.  
+*               > Conversions do have to be predefined
+*                   > There are two types of conversions: linear and non-linear.
+*                       > Linear conversions are something like miles to 
+*                         kilometers, which can be expressed by conversion ratio,
+*                         while non-linear conversions are something like 
+*                         Fahrenheit to Celsius, that requires adding some
+*                         constant.
+*                       > Linear and non-linear are separated because of the
+*                         difference in how dimensional analysis is executed and
+*                         how the conversions are represented by the program. 
+*                       > Linear conversions are represented by a
+*                         "ConversionRatio" data structure which contains two 
+*                         equivalent RealUnit types with different units which
+*                         ideally should only contain a single unit numerator.  
+*                           > For example, the ConversionRatio data structure 
+*                             for converting between miles and kilometers might
+*                             contain one RealUnit with a value of 1 and a unit
+*                             of "mi", and another RealUnit with a value of
+*                             1.60932 and a unit of "km" since 1 mile == 1.60932
+*                             kilometers. 
+*                           > Compound linear conversions are handled with 
+*                             dimensional analysis. 
+*                               > For dimensional analysis, a path must be found
+*                                 between the input numerator and denominator 
+*                                 and the desired numerator and denominator.
+*                                   > Maybe solving from either end and working
+*                                     towards the middle would be more efficient
+*                                     than the brute force method 
+*                               > Alternatively, instead of finding a path at
+*                                 conversion time, all possible linear
+*                                 conversions of between two units could be
+*                                 created every time a new conversion ratio is
+*                                 added. Essentially, this would still be the
+*                                 brute force strategy except most of the work
+*                                 has been done ahead of time. At conversion
+*                                 time, all that is left is to seach for the
+*                                 appropriate conversion, or conversions, if
+*                                 performing dimensional analysis.  
+*                                   > This is probably the better option of the
+*                                     two.
+*                                   > Because new conversion ratios will need to
+*                                     created whether the conversion ratio was
+*                                     added by the programmer or the user, all
+*                                     conversion ratios should be stored in a
+*                                     file loaded at 
+*                   > "to" operator handles conversions. It is an infix operator
+*                     where the left operand is the value with units that you 
+*                     wish to convert, while the right operand is the unit you 
+*                     wish to convert to. For example, number of kilometers in
+*                     50 miles would be written as "50 _mi to _km
+*                   > Once function definitions are implemented, user defined
+*                     non-linear unit conversions can be implemented as a 
+*                     special case of a function definition where the only 
+*                     parameter is a unit and the result is a unit (which 
+*                     includes classes inheriting from unit). 
+  
+*  
+*/             
 #include <iostream>
 #include <iomanip> 
 #include <string>
